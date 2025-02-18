@@ -17,10 +17,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'openjdk'  # Adicionando a distribuição (openjdk, adoptopenjdk, zulu, etc.)
+          distribution: 'openjdk'
 
       - name: Install dependencies
         run: mvn install
