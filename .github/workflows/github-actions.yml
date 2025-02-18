@@ -1,50 +1,49 @@
-build:
-    runs-on: self-hosted
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - name: set up JDK 17
-        uses: actions/setup-java@v4.2.0
-        with:
-          distribution: 'oracle'
-          java-version: 17
-          check-latest: false
-          cache: 'maven'
-      - name: Maven Verify
-        run: mvn clean compile
+name: API Test Pipeline with Allure Report
 
-  codestyle:
-    needs: build
-    runs-on: self-hosted
-    steps:
-      - uses: actions/checkout@v4
-      - name: set up JDK 17
-        uses: actions/setup-java@v4.2.0
-        with:
-          distribution: 'oracle'
-          java-version: 17
-          check-latest: false
-          cache: 'maven'
-      - name: Maven Verify
-        run: mvn checkstyle:check
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-  test:
-    needs: codestyle
-    runs-on: self-hosted
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest  # Usando a máquina virtual mais recente do Ubuntu para rodar o pipeline
+
     steps:
-      - uses: actions/checkout@v4
-      - name: set up JDK 17
-        uses: actions/setup-java@v4.2.0
+      - name: Checkout Repository
+        uses: actions/checkout@v2  # Faz o checkout do código do repositório
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2  # Ação para configurar o JDK
         with:
-          distribution: 'oracle'
-          java-version: 17
-          check-latest: false
-          cache: 'maven'
-      - name: Maven Verify
-        run: mvn -B clean verify
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4.0.1
+          java-version: '17'  # Define a versão do JDK para 17
+          distribution: 'openjdk'  # Usa a distribuição OpenJDK
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v2  # Ação para cache de dependências do Maven
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: Ivanuil/ImageEditor
+          path: ~/.m2/repository  # Caminho do cache de dependências
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}  # Chave do cache baseada no hash dos arquivos POM
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Install dependencies
+        run: mvn install  # Instala as dependências do projeto
+
+      - name: Run API Tests
+        run: mvn clean test  # Executa os testes
+
+      - name: Generate Allure Report
+        run: mvn allure:report  # Gera o relatório do Allure
+
+      - name: Serve Allure Report
+        run: mvn allure:serve &  # Serve o relatório do Allure para visualização
+
+      - name: Upload Allure Report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3  # Usando a ação para publicar no GitHub Pages
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # Usando o token do GitHub para autenticação
+          publish_dir: target/site/allure-maven-plugin  # Caminho do diretório gerado pelo Allure para publicação no GitHub Pages
