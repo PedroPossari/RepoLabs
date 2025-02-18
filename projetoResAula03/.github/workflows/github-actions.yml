@@ -9,11 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Configurar JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v2
         with:
-          distribution: 'temurin'
-          java-version: '17'
-          cache: 'maven'
+          java-version: '17'  # Versão do Java
+          java-package: jdk
 
       - name: Verificar versão do Java
         run: java -version
