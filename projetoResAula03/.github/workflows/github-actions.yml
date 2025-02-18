@@ -3,10 +3,10 @@ name: API Test Pipeline with Allure Report
 on:
   push:
     branches:
-      - main
+      - test-yml
   pull_request:
     branches:
-      - main
+      - test-yml
 
 jobs:
   api-tests:
@@ -24,19 +24,15 @@ jobs:
       - name: Install dependencies
         run: mvn install
 
-      # Etapa de Testes (Health Check, Funcionais, etc.)
       - name: Run API Tests
         run: mvn clean test
 
-      # Gerar o relatório Allure
       - name: Generate Allure Report
         run: mvn allure:report
 
-      # Servir o relatório Allure localmente (para visualização, se necessário)
       - name: Serve Allure Report
         run: mvn allure:serve &
 
-      # Publicar o relatório Allure no GitHub Pages
       - name: Upload Allure Report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
