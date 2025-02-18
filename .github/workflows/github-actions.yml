@@ -3,10 +3,10 @@ name: API Test Pipeline with Allure Report
 on:
   push:
     branches:
-      - test-yml
+      - main
   pull_request:
     branches:
-      - test-yml
+      - main
 
 jobs:
   api-tests:
@@ -20,6 +20,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '17'
+          distribution: 'adoptopenjdk'  # Definindo a distribuição do JDK (ou use 'zulu', 'openjdk', etc.)
 
       - name: Install dependencies
         run: mvn install
