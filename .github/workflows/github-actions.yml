@@ -17,10 +17,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v2
         with:
-          java-version: '17'
-          distribution: 'openjdk'
+          java-version: '17'  # O GitHub Actions procurará automaticamente uma distribuição compatível com a versão
 
       - name: Install dependencies
         run: mvn install
