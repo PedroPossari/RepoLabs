@@ -1,0 +1,30 @@
+name: Git hub Actions
+
+on:
+  push:
+    branches:
+      - feat-GitHub-Actions
+  pull_request:
+    branches:
+      - feat-GitHub-Actions
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 23 EA
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'oracle'
+          java-version: '23-ea'
+          cache: 'maven'
+
+      - name: Instalar dependências
+        run: mvn install -DskipTests
+
+      - name: Executar testes
+        run: mvn test
