@@ -22,6 +22,7 @@ public class GerarDadosUsuario extends BaseClient {
             .get(USUARIOS);
     ;
     String _id = response.jsonPath().getString("usuarios[0]._id");
+
     return _id;
     }
 

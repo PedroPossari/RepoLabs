@@ -5,11 +5,9 @@ import com.vemser.rest.client.LoginClient;
 import com.vemser.rest.data.factory.LoginDataFactory;
 import com.vemser.rest.model.Login;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-import static io.restassured.RestAssured.baseURI;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -17,13 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class LoginTest {
 
     private LoginClient loginClient = new LoginClient();
-
-        @BeforeEach
-        public void setup() {
-
-            baseURI = "http://localhost:3000";
-
-        }
 
         @Test
         public void testLogarComSucesso()
