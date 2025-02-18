@@ -1,30 +1,44 @@
-name: Git hub Actions
+name: API Test Pipeline with Allure Report
 
 on:
   push:
     branches:
-      - feat-GitHub-Actions
+      - main
   pull_request:
     branches:
-      - feat-GitHub-Actions
+      - main
 
 jobs:
-  test:
+  api-tests:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-      - name: Configurar JDK 23 EA
-        uses: actions/setup-java@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
         with:
-          distribution: 'oracle'
-          java-version: '23-ea'
-          cache: 'maven'
+          java-version: '17'
 
-      - name: Instalar dependências
-        run: mvn install -DskipTests
+      - name: Install dependencies
+        run: mvn install
 
-      - name: Executar testes
-        run: mvn test
+      # Etapa de Testes (Health Check, Funcionais, etc.)
+      - name: Run API Tests
+        run: mvn clean test
+
+      # Gerar o relatório Allure
+      - name: Generate Allure Report
+        run: mvn allure:report
+
+      # Servir o relatório Allure localmente (para visualização, se necessário)
+      - name: Serve Allure Report
+        run: mvn allure:serve &
+
+      # Publicar o relatório Allure no GitHub Pages
+      - name: Upload Allure Report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: target/site/allure-maven-plugin
