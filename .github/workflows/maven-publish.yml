@@ -37,6 +37,9 @@ jobs:
       - name: Run API Tests with Allure
         run: mvn clean test
 
+      - name: Run API Tests with Allure
+        run: mvn clean test -Dmaven.test.failure.ignore=true
+
       - name: Generate Allure Report
         run: mvn allure:report
 
