@@ -175,9 +175,22 @@ jobs:
           allure --version
 
       - name: Gerar relatório Allure
-        if: always()
         run: |
-            mvn allure:report
-            mvn allure: serve&
-            sleep 5
-        continue-on-error: true
+          allure generate allure-results --clean -o allure-report
+
+      - name: Verificar conteúdo de allure-report
+        run: |
+          ls -R allure-report || echo "Nenhum relatório encontrado em allure-report"
+
+      - name: Publicar relatório de testes no GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          personal_token: ${{ secrets.PAT_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-report
+          commit_message: "Publish Allure report"
+
+      - name: Verificar link do relatório
+        run: |
+          echo "Acesse o relatório em https://<seu-usuario>.github.io/<seu-repositorio>/allure-report/index.html"
