@@ -35,10 +35,10 @@ jobs:
         run: mvn -B package --file projetoResAula03/pom.xml
 
       - name: Run API Tests with Allure (Ignore Test Failures)
-        run: mvn clean test --file projetoResAula03/pom.xml -Dallure.results.directory=projetoResAula03/allure-results -Dmaven.test.failure.ignore=true
+        run: mvn clean test --file projetoResAula03/pom.xml -Dmaven.test.failure.ignore=true
 
       - name: Generate Allure Report
-        run: mvn allure:report -f projetoResAula03/pom.xml -Dallure.results.directory=projetoResAula03/allure-results
+        run: mvn allure:report -f projetoResAula03/pom.xml -Dallure.results.directory=projetoResAula03target/surefire-reports
 
 
       - name: Notify on Test Failures (if any)
