@@ -26,93 +26,166 @@ jobs:
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Build do projeto
-        run: mvn clean package -f pom.xml
+      - name: Maven Verify
+        run: mvn clean compile -f pom.xml
 
-  Testes:
+  HealthCheck:
     runs-on: ubuntu-latest
     needs: Build
-    strategy:
-      matrix:
-        type: [health, contrato, funcional]
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v4.2.0
         with:
           distribution: 'oracle'
           java-version: 17
 
-      - name: Executar testes (${{ matrix.type }})
-        run: mvn test -P${{ matrix.type }} -Dallure.results.directory=target/allure-results/${{ matrix.type }}
+      - name: Build com Maven
+        run: mvn -B package -f pom.xml
+
+      - name: Executar teste de Health check
+        run: mvn test -Phealth -Dallure.results.directory=allure-results/health -DtestFailureIgnore=false
 
       - name: Verificar conteúdo de allure-results
-        run: ls -R target/allure-results/${{ matrix.type }} || echo "Nenhum resultado encontrado em allure-results/${{ matrix.type }}"
+        run: |
+          ls -R allure-results/health || echo "Nenhum resultado encontrado em allure-results/health"
 
-      - name: Upload test results (${{ matrix.type }})
+      - name: Upload functional test results
         uses: actions/upload-artifact@v4
         with:
-          name: results-${{ matrix.type }}
-          path: target/allure-results/${{ matrix.type }}
+          name: functional-results-health
+          path: allure-results/health
+
+  Contrato:
+    runs-on: ubuntu-latest
+    needs: HealthCheck
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4.2.0
+        with:
+          distribution: 'oracle'
+          java-version: 17
+
+      - name: Executar teste de contrato de listar usuario
+        run: mvn test -Pcontrato -Dallure.results.directory=allure-results/contrato -DtestFailureIgnore=false
+
+      - name: Verificar conteúdo de allure-results
+        run: |
+          ls -R allure-results/contrato || echo "Nenhum resultado encontrado em allure-results/contrato"
+
+      - name: Upload functional test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: functional-results-contrato
+          path: allure-results/contrato
+
+  Funcional:
+    runs-on: ubuntu-latest
+    needs: Contrato
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4.2.0
+        with:
+          distribution: 'oracle'
+          java-version: 17
+
+      - name: Executar teste funcionais
+        run: mvn clean test -Dallure.results.directory=allure-results/funcional -f pom.xml
+
+      - name: Verificar conteúdo de allure-results
+        run: |
+          ls -R allure-results/funcional || echo "Nenhum resultado encontrado em allure-results/funcional"
+
+      - name: Upload functional test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: functional-results-funcional
+          path: allure-results/funcional
+
+      - run: echo "🍏 This job's status is ${{ job.status }}."
 
   Reports:
     runs-on: ubuntu-latest
-    needs: Testes
+    needs: [ Build, HealthCheck, Contrato, Funcional ]
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v4.2.0
         with:
           distribution: 'oracle'
           java-version: 17
 
-      - name: Baixar todos os resultados dos testes
-        uses: actions/download-artifact@v4
-        with:
-          path: target/allure-results/
-
-      - name: Unificar resultados
-        run: |
-          mkdir -p allure-results
-          cp -r target/allure-results/results-health/* target/allure-results/ || true
-          cp -r target/allure-results/results-contrato/* target/allure-results/ || true
-          cp -r target/allure-results/results-funcional/* target/allure-results/ || true
-
-      - name: Gerar relatório Allure
-        run: mvn allure:report
-
-      - name: Upload Allure Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report
-          path: target/site/allure-maven-plugin/
-
-  DeployReport:
-    runs-on: ubuntu-latest
-    needs: Reports
-    steps:
-      - name: Checkout gh-pages branch
+      - name: Carregar histórico do relatório de testes
         uses: actions/checkout@v4
+        if: always()
+        continue-on-error: true
         with:
           ref: gh-pages
           path: gh-pages
 
-      - name: Baixar Allure Report
+      - name: Baixar resultados dos testes funcionais
         uses: actions/download-artifact@v4
         with:
-          name: allure-report
-          path: gh-pages
+          name: functional-results-funcional
+          path: allure-results/funcional
 
-      - name: Publicar relatório no GitHub Pages
+      - name: Baixar resultados dos testes de contrato
+        uses: actions/download-artifact@v4
+        with:
+          name: functional-results-contrato
+          path: allure-results/contrato
+
+      - name: Baixar resultados dos testes de health check
+        uses: actions/download-artifact@v4
+        with:
+          name: functional-results-health
+          path: allure-results/health
+
+      - name: Merge test results
         run: |
-          cd gh-pages
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add .
-          git commit -m "Atualização do relatório Allure"
-          git push origin gh-pages
+          mkdir -p allure-results
+          cp -r allure-results/health/* allure-results/ || true
+          cp -r allure-results/contrato/* allure-results/ || true
+          cp -r allure-results/funcional/* allure-results/ || true
+
+      - name: Verificar conteúdo de allure-results
+        run: |
+          ls -R allure-results || echo "Nenhum resultado encontrado em allure-results"
+
+      - name: Instalar Allure Commandline
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget unzip
+          wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.zip
+          sudo unzip allure-2.24.0.zip -d /opt/
+          sudo ln -s /opt/allure-2.24.0/bin/allure /usr/bin/allure
+          allure --version
+
+      - name: Gerar relatório Allure
+        run: |
+          allure generate allure-results --clean -o allure-report
+
+      - name: Verificar conteúdo de allure-report
+        run: |
+          ls -R allure-report || echo "Nenhum relatório encontrado em allure-report"
+
+      - name: Publicar relatório de testes no GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          personal_token: ${{ secrets.PAT_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-report
