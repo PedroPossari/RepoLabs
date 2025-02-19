@@ -20,7 +20,8 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '17'
-          distribution: 'temurin'
+          distribution: 'corretto'  # Adicione esta linha
+          architecture: x64
 
       - name: Verify Java Version
         run: java -version
