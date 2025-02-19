@@ -38,7 +38,7 @@ jobs:
         run: mvn clean test --file projetoResAula03/pom.xml -Dmaven.test.failure.ignore=true
 
       - name: Generate Allure Report
-        run: mvn allure:report --file projetoResAula03/pom.xml
+        run: mvn allure:report -f projetoResAula03/pom.xml
 
       - name: Notify on Test Failures (if any)
         if: failure()
