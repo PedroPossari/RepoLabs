@@ -4,8 +4,10 @@ run-name: ${{ github.actor }} is testing allure 🚀
 on: [push]
 
 jobs:
-  Build:
+  Setup:
     runs-on: ubuntu-latest
+    outputs:
+      java_version: '17'
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
@@ -17,6 +19,15 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
+
+  Build:
+    runs-on: ubuntu-latest
+    needs: Setup
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Maven Verify
         run: mvn clean compile -f pom.xml
