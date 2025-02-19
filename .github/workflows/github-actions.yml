@@ -10,40 +10,55 @@ on:
 
 jobs:
   api-tests:
-    runs-on: ubuntu-latest  # Usando a máquina virtual mais recente do Ubuntu para rodar o pipeline
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2  # Faz o checkout do código do repositório
+        uses: actions/checkout@v2
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v2  # Ação para configurar o JDK
+        uses: actions/setup-java@v3
         with:
-          java-version: '17'  # Define a versão do JDK para 17
-          distribution: 'openjdk'  # Usa a distribuição OpenJDK
+          java-version: '17'
+          distribution: 'temurin'  # Melhor opção para OpenJDK
+
+      - name: Verify Java Version
+        run: java -version  # Verifica se o Java foi instalado corretamente
+
+      - name: Configure Maven Toolchains
+        run: |
+          mkdir -p ~/.m2
+          echo '<toolchains>
+            <toolchain>
+              <type>jdk</type>
+              <provides>
+                <version>17</version>
+              </provides>
+              <configuration>
+                <jdkHome>${{ env.JAVA_HOME }}</jdkHome>
+              </configuration>
+            </toolchain>
+          </toolchains>' > ~/.m2/toolchains.xml
 
       - name: Cache Maven dependencies
-        uses: actions/cache@v2  # Ação para cache de dependências do Maven
+        uses: actions/cache@v2
         with:
-          path: ~/.m2/repository  # Caminho do cache de dependências
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}  # Chave do cache baseada no hash dos arquivos POM
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
 
       - name: Install dependencies
-        run: mvn install  # Instala as dependências do projeto
+        run: mvn dependency:resolve  # Evita problemas com 'mvn install'
 
       - name: Run API Tests
-        run: mvn clean test  # Executa os testes
+        run: mvn clean test
 
       - name: Generate Allure Report
-        run: mvn allure:report  # Gera o relatório do Allure
-
-      - name: Serve Allure Report
-        run: mvn allure:serve &  # Serve o relatório do Allure para visualização
+        run: mvn allure:report
 
       - name: Upload Allure Report to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3  # Usando a ação para publicar no GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}  # Usando o token do GitHub para autenticação
-          publish_dir: target/site/allure-maven-plugin  # Caminho do diretório gerado pelo Allure para publicação no GitHub Pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: target/site/allure-maven-plugin
