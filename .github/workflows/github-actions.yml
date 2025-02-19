@@ -173,3 +173,20 @@ jobs:
           personal_token: ${{ secrets.PAT_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-history
+
+      - name: Instalar Allure Commandline
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y allure
+
+      - name: Gerar relatório Allure
+        run: |
+          allure generate allure-results --clean -o allure-report
+
+      - name: Publicar relatório de testes no GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          personal_token: ${{ secrets.PAT_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-report
