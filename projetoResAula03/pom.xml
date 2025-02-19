@@ -133,9 +133,9 @@
                         </goals>
                         <configuration>
                             <!-- Configura o diretório onde os resultados do Allure serão armazenados -->
-                            <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
+                            <resultsDirectory>target/allure-results</resultsDirectory>
                             <!-- Configura o diretório onde o relatório será gerado -->
-                            <reportDirectory>${project.build.directory}/allure-report</reportDirectory>
+                            <reportDirectory>target/allure-report</reportDirectory>
                         </configuration>
                     </execution>
                 </executions>
