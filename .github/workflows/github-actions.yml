@@ -189,8 +189,8 @@ jobs:
           personal_token: ${{ secrets.PAT_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-report
-          commit_message: "Publish Allure report"
+          commit_message: "Atualização do relatório Allure"
 
       - name: Verificar link do relatório
         run: |
-          echo "Acesse o relatório em https://<seu-usuario>.github.io/<seu-repositorio>/allure-report/index.html"
+          echo "Acesse o relatório em https://PedroPossari.github.io/RepoLabs/allure-report/index.html"
