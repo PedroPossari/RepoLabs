@@ -7,6 +7,11 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -23,7 +28,9 @@ jobs:
     needs: Explore-GitHub-Actions
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4.2.0
         with:
@@ -31,6 +38,7 @@ jobs:
           java-version: 17
           check-latest: false
           cache: 'maven'
+
       - name: Maven Checkstyle
         run: mvn checkstyle:check
 
@@ -38,7 +46,9 @@ jobs:
     needs: codestyle
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4.2.0
         with:
@@ -46,8 +56,10 @@ jobs:
           java-version: 17
           check-latest: false
           cache: 'maven'
+
       - name: Maven Verify
         run: mvn -B clean verify
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1
         with:
