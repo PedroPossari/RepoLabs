@@ -60,5 +60,14 @@ jobs:
           check-latest: false
           cache: 'maven'
 
-      - name: Executar testes de contrato
-        run: mvn test -Dtest="UsuariosGetTest#testListarUsuariosComSucesso,UsuariosPostTest#testListarUsuariosComSucessoSchemas,UsuarioPutTest#testAtualizarUsuarioComSucessoSchema,LoginTest#testLogarComSucessoSchemas"
+      - name: Executar teste de contrato de listar usuario
+        run: mvn test -Dtest=UsuariosGetTest#testListarUsuariosComSucesso
+
+      - name: Executar teste de contrato de criar usuario
+        run: mvn test -Dtest=UsuariosPostTest#testListarUsuariosComSucessoSchemas
+
+      - name: Executar teste de contrato de atualizar usuario
+        run: mvn test -Dtest=UsuarioPutTest#testAtualizarUsuarioComSucessoSchema
+
+      - name: Executar teste de contrato de login
+        run: mvn test -Dtest=LoginTest#testLogarComSucessoSchemas
