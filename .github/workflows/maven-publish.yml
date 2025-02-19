@@ -35,7 +35,7 @@ jobs:
         run: mvn -f projetoResAula03/pom.xml clean test
 
       - name: List Allure results
-        run: ls -R projetoResAula03/target/allure-results
+        run: ls -R projetoResAula03/allure-results
 
       - name: Build Allure Report
         run: mvn -f projetoResAula03/pom.xml allure:report
