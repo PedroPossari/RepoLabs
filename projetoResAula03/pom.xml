@@ -133,9 +133,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <allure.results.directory>target/allure-results</allure.results.directory>
-                </configuration>
             </plugin>
         </plugins>
     </build>
