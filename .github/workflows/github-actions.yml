@@ -49,17 +49,17 @@ jobs:
         run: mvn -B package -f pom.xml
 
       - name: Executar teste de Health check
-        run: mvn test -Phealth -Dallure.results.directory=allure-results/health -DtestFailureIgnore=false
+        run: mvn test -Phealth -Dallure.results.directory=target/allure-results/health -DtestFailureIgnore=false
 
       - name: Verificar conteúdo de allure-results
         run: |
-          ls -R allure-results/health || echo "Nenhum resultado encontrado em allure-results/health"
+          ls -R target/allure-results/health || echo "Nenhum resultado encontrado em target/allure-results/health"
 
       - name: Upload functional test results
         uses: actions/upload-artifact@v4
         with:
           name: functional-results-health
-          path: allure-results/health
+          path: target/allure-results/health
 
   Contrato:
     runs-on: ubuntu-latest
@@ -75,17 +75,17 @@ jobs:
           java-version: 17
 
       - name: Executar teste de contrato de listar usuário
-        run: mvn test -Pcontrato -Dallure.results.directory=allure-results/contrato -DtestFailureIgnore=false
+        run: mvn test -Pcontrato -Dallure.results.directory=target/allure-results/contrato -DtestFailureIgnore=false
 
       - name: Verificar conteúdo de allure-results
         run: |
-          ls -R allure-results/contrato || echo "Nenhum resultado encontrado em allure-results/contrato"
+          ls -R target/allure-results/contrato || echo "Nenhum resultado encontrado em allure-results/contrato"
 
       - name: Upload functional test results
         uses: actions/upload-artifact@v4
         with:
           name: functional-results-contrato
-          path: allure-results/contrato
+          path: target/allure-results/contrato
 
   Funcional:
     runs-on: ubuntu-latest
@@ -101,17 +101,17 @@ jobs:
           java-version: 17
 
       - name: Executar testes funcionais
-        run: mvn clean test -Dallure.results.directory=allure-results/funcional -f pom.xml
+        run: mvn clean test -Dallure.results.directory=target/allure-results/funcional -f pom.xml
 
       - name: Verificar conteúdo de allure-results
         run: |
-          ls -R allure-results/funcional || echo "Nenhum resultado encontrado em allure-results/funcional"
+          ls -R target/allure-results/funcional || echo "Nenhum resultado encontrado em allure-results/funcional"
 
       - name: Upload functional test results
         uses: actions/upload-artifact@v4
         with:
           name: functional-results-funcional
-          path: allure-results/funcional
+          path: target/allure-results/funcional
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
@@ -127,26 +127,26 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: functional-results-funcional
-          path: allure-results/funcional
+          path: target/allure-results/funcional
 
       - name: Baixar resultados dos testes de contrato
         uses: actions/download-artifact@v4
         with:
           name: functional-results-contrato
-          path: allure-results/contrato
+          path: target/allure-results/contrato
 
       - name: Baixar resultados dos testes de health check
         uses: actions/download-artifact@v4
         with:
           name: functional-results-health
-          path: allure-results/health
+          path: target/allure-results/health
 
       - name: Merge test results
         run: |
           mkdir -p allure-results
-          cp -r allure-results/health/* allure-results/ || true
-          cp -r allure-results/contrato/* allure-results/ || true
-          cp -r allure-results/funcional/* allure-results/ || true
+          cp -r target/allure-results/health/* target/allure-results/ || true
+          cp -r target/allure-results/contrato/* target/allure-results/ || true
+          cp -r target/allure-results/funcional/* target/allure-results/ || true
 
       - name: Generate Allure Report
         run: mvn allure:report
