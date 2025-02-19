@@ -191,6 +191,7 @@ jobs:
           publish_dir: allure-report
           commit_message: "Publish Allure report"
 
+
       - name: Verificar link do relatório
         run: |
           echo "Acesse o relatório em https://<seu-usuario>.github.io/<seu-repositorio>/allure-report/index.html"
