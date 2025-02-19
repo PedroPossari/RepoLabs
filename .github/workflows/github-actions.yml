@@ -45,7 +45,7 @@ jobs:
       - name: Executar teste de Health check
         run: mvn test -Dtest=UsuariosGetTest#testListarUsuariosComSucesso
 
-    ContratoTest:
+    Contrato:
       runs-on: ubuntu-latest
       needs: HealthCheck
       steps:
