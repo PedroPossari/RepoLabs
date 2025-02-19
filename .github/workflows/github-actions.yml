@@ -57,7 +57,7 @@ jobs:
       - name: Upload functional test results
         uses: actions/upload-artifact@v4.6.0
         with:
-          name: functional-results
+          name: functional-results-health
           path: allure-results/health
 
   Contrato:
@@ -82,7 +82,7 @@ jobs:
       - name: Upload functional test results
         uses: actions/upload-artifact@v4.6.0
         with:
-          name: functional-results
+          name: functional-results-contrato
           path: allure-results/contrato
 
   Funcional:
@@ -107,7 +107,7 @@ jobs:
       - name: Upload functional test results
         uses: actions/upload-artifact@v4.6.0
         with:
-          name: functional-results
+          name: functional-results-funcional
           path: allure-results/funcional
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
