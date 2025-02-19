@@ -49,7 +49,7 @@ jobs:
         run: mvn -B package -f pom.xml
 
       - name: Executar teste de Health check
-        run: mvn test -Dtest=UsuariosGetTest#testListarUsuariosComSucesso Dallure.results.directory=allure-results/health -f pom.xml
+        run: mvn test -Dtest=UsuariosGetTest#testListarUsuariosComSucesso -Dallure.results.directory=allure-results/health -f pom.xml
 
       - name: Verificar conteúdo de allure-results
         run: ls -R allure-results/health
