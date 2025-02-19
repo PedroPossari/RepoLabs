@@ -5,6 +5,7 @@ import com.vemser.rest.client.LoginClient;
 import com.vemser.rest.data.factory.LoginDataFactory;
 import com.vemser.rest.model.Login;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 
@@ -35,6 +36,7 @@ public class LoginTest {
         }
 
     @Test
+    @Tag("contrato")
     public void testLogarComSucessoSchemas()
     {
         Login login = LoginDataFactory.loginValido();

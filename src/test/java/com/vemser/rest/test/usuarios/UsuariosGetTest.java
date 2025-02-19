@@ -5,6 +5,7 @@ import com.vemser.rest.data.factory.UsuarioDataFactory;
 import com.vemser.rest.model.Usuario;
 import com.vemser.rest.utils.GerarDadosUsuario;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
@@ -31,6 +32,7 @@ public class UsuariosGetTest {
     }
 
     @Test
+    @Tag("contrato")
     public void testListarUsuariosComSucessoSchemas()
     {
 

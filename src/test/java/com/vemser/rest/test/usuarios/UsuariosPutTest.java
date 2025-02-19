@@ -7,6 +7,7 @@ import com.vemser.rest.model.Usuario;
 import com.vemser.rest.utils.GerarDadosUsuario;
 import io.restassured.response.Response;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 
@@ -20,6 +21,7 @@ public class UsuariosPutTest {
     private GerarDadosUsuario dadosDoUsuario = new GerarDadosUsuario();
 
     @Test
+    @Tag("health")
     public void testAtualizarUsuarioComSucesso()
     {
 
@@ -34,6 +36,7 @@ public class UsuariosPutTest {
     }
 
     @Test
+    @Tag("contrato")
     public void testAtualizarUsuarioComSucessoSchema()
     {
 
