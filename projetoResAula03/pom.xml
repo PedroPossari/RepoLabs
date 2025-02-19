@@ -12,7 +12,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <allure.version>2.29.0</allure.version>
+        <allure.version>2.29.0</allure.version> <!-- Atualize para versão mais recente -->
     </properties>
 
     <dependencyManagement>
@@ -77,20 +77,21 @@
             <version>2.4.2</version>
         </dependency>
 
+        <!-- Allure JUnit 5 -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-rest-assured -->
+        <!-- Allure RestAssured -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-rest-assured</artifactId>
             <version>2.29.0</version>
         </dependency>
-
     </dependencies>
+
     <build>
         <plugins>
             <!-- Maven Compiler Plugin -->
@@ -124,7 +125,7 @@
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
-                <version>2.14.0</version> <!-- Atualize para a versão mais recente -->
+                <version>2.29.0</version> <!-- Atualize para versão mais recente -->
                 <executions>
                     <execution>
                         <goals>
@@ -132,10 +133,8 @@
                             <goal>report</goal>
                         </goals>
                         <configuration>
-                            <!-- Configura o diretório onde os resultados do Allure serão armazenados -->
-                            <resultsDirectory>target/allure-results</resultsDirectory>
-                            <!-- Configura o diretório onde o relatório será gerado -->
-                            <reportDirectory>target/allure-report</reportDirectory>
+                            <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
+                            <reportDirectory>${project.build.directory}/allure-report</reportDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -149,5 +148,4 @@
             <url>https://repo.maven.apache.org/maven2</url>
         </repository>
     </repositories>
-
 </project>
