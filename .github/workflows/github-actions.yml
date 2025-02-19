@@ -55,7 +55,7 @@ jobs:
         run: ls -R allure-results/health
 
       - name: Upload functional test results
-        uses: actions/upload-artifact@v4.6.0
+        uses: actions/upload-artifact@v4
         with:
           name: functional-results-health
           path: allure-results/health
@@ -80,7 +80,7 @@ jobs:
         run: ls -R allure-results/contrato
 
       - name: Upload functional test results
-        uses: actions/upload-artifact@v4.6.0
+        uses: actions/upload-artifact@v4
         with:
           name: functional-results-contrato
           path: allure-results/contrato
@@ -99,13 +99,13 @@ jobs:
           java-version: 17
 
       - name: Executar teste funcionais
-        run: mvn clean test -Dallure.results.directory=allure-results/funcional  -f pom.xml
+        run: mvn clean test -Dallure.results.directory=allure-results/funcional -f pom.xml
 
       - name: Verificar conteúdo de allure-results
         run: ls -R allure-results/funcional
 
       - name: Upload functional test results
-        uses: actions/upload-artifact@v4.6.0
+        uses: actions/upload-artifact@v4
         with:
           name: functional-results-funcional
           path: allure-results/funcional
@@ -133,30 +133,22 @@ jobs:
           ref: gh-pages
           path: gh-pages
 
-      - name: Construir relatório de testes Allure
-        uses: simple-elf/allure-report-action@v1.7
-        if: always()
+      - name: Baixar resultados dos testes funcionais
+        uses: actions/download-artifact@v4
         with:
-          gh_pages: gh-pages
-          allure_history: allure-history
-          allure_results: allure-results
-
-      - name: download functional test results
-        uses: actions/download-artifact@v4.6.0
-        with:
-          name: functional-results
+          name: functional-results-funcional
           path: allure-results/funcional
 
-      - name: download contrato test results
-        uses: actions/download-artifact@v4.6.0
+      - name: Baixar resultados dos testes de contrato
+        uses: actions/download-artifact@v4
         with:
-          name: functional-results
+          name: functional-results-contrato
           path: allure-results/contrato
 
-      - name: download health test results
-        uses: actions/download-artifact@v4.6.0
+      - name: Baixar resultados dos testes de health check
+        uses: actions/download-artifact@v4
         with:
-          name: functional-results
+          name: functional-results-health
           path: allure-results/health
 
       - name: Merge test results
@@ -165,14 +157,6 @@ jobs:
           cp -r allure-results/health/* allure-results/ || true
           cp -r allure-results/contrato/* allure-results/ || true
           cp -r allure-results/funcional/* allure-results/ || true
-
-      - name: Publicar relatório de testes
-        uses: peaceiris/actions-gh-pages@v3
-        if: always()
-        with:
-          personal_token: ${{ secrets.PAT_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: allure-history
 
       - name: Instalar Allure Commandline
         run: |
