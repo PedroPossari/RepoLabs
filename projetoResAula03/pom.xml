@@ -127,10 +127,16 @@
                 <version>2.14.0</version> <!-- Atualize para a versão mais recente -->
                 <executions>
                     <execution>
-                        <phase>test</phase>
                         <goals>
+                            <goal>serve</goal>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <!-- Configura o diretório onde os resultados do Allure serão armazenados -->
+                            <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
+                            <!-- Configura o diretório onde o relatório será gerado -->
+                            <reportDirectory>${project.build.directory}/allure-report</reportDirectory>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
