@@ -182,50 +182,6 @@ allure.api.addTranslation('az', {
     }
 });
 
-allure.api.addTranslation('sv', {
-    tab: {
-        behaviors: {
-            name: 'Beteenden'
-        }
-    },
-    widget: {
-        behaviors: {
-            name: 'Funktioner efter user stories',
-            showAll: 'visa allt'
-        }
-    }
-});
-
-allure.api.addTranslation('isv', {
-    tab: {
-        behaviors: {
-            name: 'Funkcionalnost',
-        }
-    },
-    widget: {
-        behaviors: {
-            name: 'Funkcionalnost',
-            showAll: 'pokaži vsěčto',
-        }
-    }
-});
-
-
-allure.api.addTranslation('ka', {
-    tab: {
-        behaviors: {
-            name: 'ფუნქციონალი',
-        }
-    },
-    widget: {
-        behaviors: {
-            name: 'ფუნქციონალი',
-            showAll: 'ყველას ჩვენება',
-        }
-    }
-});
-
-
 allure.api.addTab('behaviors', {
     title: 'tab.behaviors.name', icon: 'fa fa-list',
     route: 'behaviors(/)(:testGroup)(/)(:testResult)(/)(:testResultTab)(/)',

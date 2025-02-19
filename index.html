@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Allure Report</title>
-    <link rel="icon" href="favicon.ico">
+    <link rel="favicon" href="favicon.ico">
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="stylesheet" type="text/css" href="plugin/screen-diff/styles.css">
 </head>
@@ -17,18 +17,16 @@
     <div id="popup"></div>
     <script src="app.js"></script>
     <script src="plugin/behaviors/index.js"></script>
-    <script src="plugin/packages/index.js"></script>
     <script src="plugin/screen-diff/index.js"></script>
+    <script src="plugin/packages/index.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FVWC4GKEYS"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-FVWC4GKEYS', {
-          'allureVersion': '2.30.0',
-          'reportUuid': 'bb2776e1-12f9-45f7-b153-be76ecc012eb',
-          'single_file': false
-        });
+        gtag('config', 'G-FVWC4GKEYS');
+        gtag('allureVersion', 'dev')
+        gtag('reportUuid', '11638498-086d-4c32-9d71-5cd23e8e6f0a')
     </script>
 </body>
 </html>
