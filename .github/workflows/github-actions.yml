@@ -19,7 +19,7 @@ jobs:
           java-version: 17
 
       - name: Maven Verify
-        run: mvn clean compile
+        run: mvn clean compile --file projetoResAula03/pom.xml
 
   HealthCheck:
     runs-on: ubuntu-latest
@@ -35,10 +35,10 @@ jobs:
           java-version: 17
 
       - name: Build com Maven
-        run: mvn -B package --file pom.xml
+        run: mvn -B package --file projetoResAula03/pom.xml
 
       - name: Executar teste de Health check
-        run: mvn test -Dtest=UsuariosGetTest#testListarUsuariosComSucesso
+        run: mvn test -Dtest=UsuariosGetTest#testListarUsuariosComSucesso --file projetoResAula03/pom.xml
 
   Contrato:
     runs-on: ubuntu-latest
@@ -54,13 +54,13 @@ jobs:
           java-version: 17
 
       - name: Executar teste de contrato de listar usuario
-        run: mvn test -Dtest=UsuariosGetTest#testListarUsuariosComSucesso
+        run: mvn test -Dtest=UsuariosGetTest#testListarUsuariosComSucesso --file projetoResAula03/pom.xml
 
       - name: Executar teste de contrato de atualizar usuario
-        run: mvn test -Dtest=UsuariosPutTest#testAtualizarUsuarioComSucessoSchema
+        run: mvn test -Dtest=UsuariosPutTest#testAtualizarUsuarioComSucessoSchema --file projetoResAula03/pom.xml
 
       - name: Executar teste de contrato de login
-        run: mvn test -Dtest=LoginTest#testLogarComSucessoSchemas
+        run: mvn test -Dtest=LoginTest#testLogarComSucessoSchemas --file projetoResAula03/pom.xml
 
   Funcional:
     runs-on: ubuntu-latest
@@ -76,7 +76,7 @@ jobs:
           java-version: 17
 
       - name: Executar teste funcionais
-        run: mvn clean test
+        run: mvn clean test --file projetoResAula03/pom.xml
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
@@ -106,8 +106,8 @@ jobs:
         if: always()
         with:
           gh_pages: gh-pages
-          allure_history: allure-history
-          allure_results: target/allure-results
+          allure_history: allure-history # Pasta de histórico do Allure
+          allure_results: allure-results # Pasta de resultados do Allure
 
       - name: Publicar relatório de testes
         uses: peaceiris/actions-gh-pages@v3
