@@ -26,7 +26,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    needs: Build  # Garante que o job `Build` seja concluído antes de rodar os testes
+    needs: Build
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
@@ -40,7 +40,7 @@ jobs:
           cache: 'maven'
 
       - name: Build com Maven
-        run: mvn -B package --file projetoResAula03/pom.xml
+        run: mvn -B package --file pom.xml
 
       - name: Executar testes de API com Allure
         run: mvn clean test -Dmaven.test.failure.ignore=true
