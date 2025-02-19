@@ -167,5 +167,4 @@ jobs:
             mvn allure:report
             mvn allure: serve&
             sleep 5
-            pkill -f allure
         continue-on-error: true
