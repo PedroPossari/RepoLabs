@@ -34,7 +34,7 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file projetoResAula03/pom.xml
 
-      - name: Run API Tests with Allure
+      - name: Run API Tests with Allure (Ignore Test Failures)
         run: mvn clean test -Dmaven.test.failure.ignore=true
 
       - name: Generate Allure Report
