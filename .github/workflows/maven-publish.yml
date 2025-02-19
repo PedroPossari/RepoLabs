@@ -32,13 +32,13 @@ jobs:
         run: mvn -f projetoResAula03/pom.xml dependency:go-offline compile compiler:testCompile
 
       - name: Run Tests and Generate Allure Results
-        run: mvn clean test
+        run: mvn -f projetoResAula03/pom.xml clean test
 
       - name: List Allure results
-        run: ls -R target/allure-results
+        run: ls -R projetoResAula03/target/allure-results
 
       - name: Build Allure Report
-        run: mvn allure:report
+        run: mvn -f projetoResAula03/pom.xml allure:report
 
       - name: Deploy report to Github Pages
         uses: peaceiris/actions-gh-pages@v2
