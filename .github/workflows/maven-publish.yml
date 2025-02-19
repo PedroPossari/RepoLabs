@@ -38,10 +38,11 @@ jobs:
         run: mvn clean test --file projetoResAula03/pom.xml -Dmaven.test.failure.ignore=true
 
       - name: Generate Allure Report
-        run: mvn allure:report
+        run: mvn allure:report --file projetoResAula03/pom.xml
+        working-directory: projetoResAula03
 
       - name: Notify on Test Failures (if any)
-        if: failure()  # This ensures the step is only executed if the tests fail
+        if: failure()
         run: |
           echo "Test failures detected!"
           # Send a notification (email, Slack, etc.)
