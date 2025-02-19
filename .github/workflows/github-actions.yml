@@ -163,29 +163,13 @@ jobs:
 
       - name: Verificar conteúdo de allure-results
         run: |
-          ls -R target/allure-results || echo "Nenhum resultado encontrado em allure-results"
-
-      - name: Instalar Allure Commandline
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget unzip
-          wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.zip
-          sudo unzip allure-2.24.0.zip -d /opt/
-          sudo ln -s /opt/allure-2.24.0/bin/allure /usr/bin/allure
-          allure --version
+          ls -R allure-results || echo "Nenhum resultado encontrado em allure-results"
 
       - name: Gerar relatório Allure
-        run: |
-          allure generate allure-results --clean -o allure-report
-
-      - name: Verificar conteúdo de allure-report
-        run: |
-          ls -R target/allure-report || echo "Nenhum relatório encontrado em allure-report"
-
-      - name: Publicar relatório de testes no GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
         if: always()
-        with:
-          personal_token: ${{ secrets.PAT_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: target/allure-report
+        run: |
+            mvn allure:report
+            mvn allure: serve&
+            sleep 5
+            pkill -f allure
+          continue-on-error: true
