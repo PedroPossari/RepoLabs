@@ -1,57 +1,83 @@
-name: Maven Package
+name: allure-junit5-maven
 
 on:
   push:
-    branches:
-      - test-yml
+    branches-ignore:
+      - '!main'
   pull_request:
-    branches:
-      - test-yml
-  release:
-    types: [created]
-
+    types: [ opened, synchronize, reopened ]
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
+  autotests:
+    name: Run tests and generate Allure Report
+    runs-on: Ubuntu-20.04
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Amazon Corretto JDK 17
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v2
         with:
-          java-version: '17'
-          distribution: 'corretto'
-          server-id: github
-          settings-path: ${{ github.workspace }}
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: actions/cache@v1
+        with:
+          path: |
+            ~/.m2/repository
+          key: ${{ runner.os }}-${{ github.workflow }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ github.workflow }}-
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
 
-      - name: Verify Java Version
-        run: java -version
+      - name: Install dependencies
+        run: mvn dependency:go-offline compile compiler:testCompile
 
-      - name: Build with Maven
-        run: mvn -B package --file projetoResAula03/pom.xml
+      - name: Run Test
+        if: always()
+        run: mvn package
+        continue-on-error: true
 
-      - name: Create allure-results directory
-        run: mkdir -p projetoResAula03/target/allure-results
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
 
-      - name: Run API Tests with Allure (Ignore Test Failures)
-        run: mvn clean test --file projetoResAula03/pom.xml -Dmaven.test.failure.ignore=true
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
 
-      - name: Generate Allure Report
-        run: mvn allure:report -f projetoResAula03/pom.xml
-
-      - name: Notify on Test Failures (if any)
-        if: failure()
-        run: |
-          echo "Test failures detected!"
-          # Send a notification (email, Slack, etc.)
-          # Example for Slack:
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"Test failures detected in the build!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
-
-      - name: Publish to GitHub Packages Apache Maven
-        run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml -f projetoResAula03/pom.xml
+      - name: Build and analyze
+        if: always()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -Psonarqube -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+        continue-on-error: true
+
+      - name: Get Allure history
+        uses: actions/checkout@v2
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Allure Report action from marketplace
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        id: allure-report
+        with:
+          allure_results: target/allure-results
+          gh_pages: gh-pages
+          allure_report: allure-report
+          allure_history: allure-history
+
+      - name: Deploy report to Github Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v2
+        env:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: allure-history
