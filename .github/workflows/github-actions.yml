@@ -52,7 +52,7 @@ jobs:
         run: mvn test -Dtest=UsuariosGetTest#testListarUsuariosComSucesso -f pom.xml
 
       - name: Verificar conteúdo de allure-results
-        run: ls -R ${GITHUB_WORKSPACE}/allure-results/health
+        run: ls -R allure-results/health
 
       - name: Upload functional test results
         uses: actions/upload-artifact@v4.6.0
@@ -83,7 +83,7 @@ jobs:
         run: mvn test -Dtest=LoginTest#testLogarComSucessoSchemas --file pom.xml
 
       - name: Verificar conteúdo de allure-results
-        run: ls -R ${GITHUB_WORKSPACE}/allure-results/contrato
+        run: ls -R allure-results/contrato
 
       - name: Upload functional test results
         uses: actions/upload-artifact@v4.6.0
@@ -108,7 +108,7 @@ jobs:
         run: mvn clean test -f pom.xml
 
       - name: Verificar conteúdo de allure-results
-        run: ls -R ${GITHUB_WORKSPACE}/allure-results/funcional
+        run: ls -R allure-results/funcional
 
       - name: Upload functional test results
         uses: actions/upload-artifact@v4.6.0
@@ -145,7 +145,7 @@ jobs:
         with:
           gh_pages: gh-pages
           allure_history: allure-history
-          allure_results: ${GITHUB_WORKSPACE}/allure-results
+          allure_results: allure-results
 
       - name: download functional test results
         uses: actions/download-artifact@v4.6.0
