@@ -160,8 +160,13 @@ jobs:
 
       - name: Instalar Allure Commandline
         run: |
+          # Baixar e instalar o Allure
           sudo apt-get update
-          sudo apt-get install -y allure
+          sudo apt-get install -y wget unzip
+          wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.zip
+          sudo unzip allure-2.24.0.zip -d /opt/
+          sudo ln -s /opt/allure-2.24.0/bin/allure /usr/bin/allure
+          allure --version
 
       - name: Gerar relatório Allure
         run: |
