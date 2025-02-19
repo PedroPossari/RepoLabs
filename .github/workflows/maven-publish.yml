@@ -1,6 +1,12 @@
 name: Maven Package
 
 on:
+  push:
+    branches:
+      - test-yml
+  pull_request:
+    branches:
+      - test-yml
   release:
     types: [created]
 
