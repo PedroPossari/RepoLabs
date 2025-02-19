@@ -161,6 +161,10 @@ jobs:
           cp -r allure-results/contrato/* allure-results/ || true
           cp -r allure-results/funcional/* allure-results/ || true
 
+      - name: Verificar conteúdo de allure-results
+        run: |
+          ls -R allure-results || echo "Nenhum resultado encontrado em allure-results"
+
       - name: Instalar Allure Commandline
         run: |
           sudo apt-get update
