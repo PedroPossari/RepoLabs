@@ -60,5 +60,5 @@ jobs:
           check-latest: false
           cache: 'maven'
 
-      - name: Executar teste de Contrato
-        run: mvn test -Dtest=UsuariosGetTest#testListarUsuariosComSucessoSchemas,UsuarioPostTest#testCadastrarUsuarioComSucessoSchemas,UsuarioPutTest#testAtualizarUsuarioComSucessoSchema,LoginTest#testLogarComSucessoSchemas
+      - name: Executar testes de contrato
+        run: mvn test -Dtest="UsuariosGetTest#testListarUsuariosComSucesso,UsuariosPostTest#testListarUsuariosComSucessoSchemas,UsuarioPutTest#testAtualizarUsuarioComSucessoSchema,LoginTest#testLogarComSucessoSchemas"
