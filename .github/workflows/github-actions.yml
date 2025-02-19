@@ -116,21 +116,3 @@ jobs:
           personal_token: ${{ secrets.PAT_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-history
-
-      - name: Configurar Git para o GitHub Pages
-        run: |
-          git config --global user.email "github-actions@github.com"
-          git config --global user.name "github-actions"
-
-      - name: Copiar relatório para gh-pages
-        run: |
-          cp -r allure-history/* gh-pages/
-
-      - name: Publicar relatório no GitHub Pages
-        run: |
-          cd gh-pages
-          git fetch
-          git pull
-          git add .
-          git commit -m "Atualizando relatório Allure [skip ci]" || echo "Nada para atualizar"
-          git push origin gh-pages
