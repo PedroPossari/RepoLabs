@@ -129,6 +129,7 @@ jobs:
       - name: Publicar relatório no GitHub Pages
         run: |
           cd gh-pages
+          git fetch
           git add .
           git commit -m "Atualizando relatório Allure [skip ci]" || echo "Nada para atualizar"
           git push origin gh-pages
