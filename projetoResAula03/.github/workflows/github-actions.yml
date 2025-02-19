@@ -1,27 +1,57 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: test
 
 on:
   push:
+  pull_request:
 
 jobs:
-  Explore-GitHub-Actions:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: self-hosted
     steps:
-      - name: Configurar JDK 17
-        uses: actions/setup-java@v2
+      - uses: actions/checkout@v4
         with:
-          java-version: '17'  # Versão do Java
-          java-package: jdk
+          persist-credentials: false
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4.2.0
+        with:
+          distribution: 'oracle'
+          java-version: 17
+          check-latest: false
+          cache: 'maven'
+      - name: Maven Verify
+        run: mvn clean compile
 
-      - name: Verificar versão do Java
-        run: java -version
+  codestyle:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4.2.0
+        with:
+          distribution: 'oracle'
+          java-version: 17
+          check-latest: false
+          cache: 'maven'
+      - name: Maven Checkstyle
+        run: mvn checkstyle:check
 
-      - name: Verificar versão do Maven
-        run: mvn -version
-
-      - name: Instalar dependências
-        run: mvn install -DskipTests
-
-      - name: Executar testes
-        run: mvn test
+  test:
+    needs: codestyle
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4.2.0
+        with:
+          distribution: 'oracle'
+          java-version: 17
+          check-latest: false
+          cache: 'maven'
+      - name: Maven Verify
+        run: mvn -B clean verify
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: Ivanuil/ImageEditor
