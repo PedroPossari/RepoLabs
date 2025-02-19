@@ -92,23 +92,21 @@
 
     <build>
         <plugins>
+            <!-- Plugin do Allure -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.3</version>
-                <configuration>
-                    <argLine>
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                    </argLine>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.aspectj</groupId>
-                        <artifactId>aspectjweaver</artifactId>
-                        <version>${aspectj.version}</version>
-                    </dependency>
-                </dependencies>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>${allure.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>serve</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
+
+            <!-- Plugin do Surefire para rodar os testes -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -119,5 +117,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>
