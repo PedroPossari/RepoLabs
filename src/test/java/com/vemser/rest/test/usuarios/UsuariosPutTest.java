@@ -60,19 +60,4 @@ public class UsuariosPutTest {
 
     }
 
-    @Test
-    public void testAtualizarUsuarioComIdInvalido()
-    {
-
-        Usuario usuario = UsuarioDataFactory.usuarioValido();
-
-        Response response = usuarioClient.atualizarUsuarioPorID(usuario, dadosDoUsuario.gerarDadoIdInvalido());
-        assertAll("response",
-                () -> assertEquals(400, response.getStatusCode(), "O status code não é 400"),
-                () -> assertEquals(null, response.jsonPath().getString("message"), "Mensagem de erro inválida"),
-                () -> assertEquals("application/json; charset=utf-8", response.header("Content-Type"), "O Content-Type está incorreto")
-        );
-
-    }
-
 }

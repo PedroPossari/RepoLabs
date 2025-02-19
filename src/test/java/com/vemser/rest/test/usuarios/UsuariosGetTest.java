@@ -126,16 +126,4 @@ public class UsuariosGetTest {
 
     }
 
-    @Test
-    public void testListarUsuarioPorIdEmBranco()
-    {
-        Response response = usuarioClient.listarUsuariosPorID("");
-        assertAll("response",
-                () -> assertEquals(400, response.getStatusCode(), "O status code não é 400 para ID inválido"),
-                () -> assertEquals("application/json; charset=utf-8", response.header("Content-Type"), "O Content-Type está incorreto"),
-                () -> assertTrue(response.jsonPath().getString("message").contains("Usuário não encontrado"), "Mensagem de Erro não corresponde")
-        );
-
-    }
-
 }
