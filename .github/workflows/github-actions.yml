@@ -82,6 +82,7 @@ jobs:
 
   Reports:
     runs-on: ubuntu-latest
+    needs: [ Build, HealthCheck, Contrato, Funcional ]
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
