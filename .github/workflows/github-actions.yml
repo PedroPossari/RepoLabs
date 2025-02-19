@@ -174,6 +174,10 @@ jobs:
         run: |
           allure generate allure-results --clean -o allure-report
 
+      - name: Verificar conteúdo de allure-report
+        run: |
+          ls -R allure-report || echo "Nenhum relatório encontrado em allure-report"
+
       - name: Publicar relatório de testes no GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         if: always()
