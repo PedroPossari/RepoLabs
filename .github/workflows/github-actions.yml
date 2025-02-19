@@ -161,10 +161,6 @@ jobs:
           cp -r target/allure-results/contrato/* target/allure-results/ || true
           cp -r target/allure-results/funcional/* target/allure-results/ || true
 
-      - name: Verificar conteúdo de allure-results
-        run: |
-          ls -R allure-results || echo "Nenhum resultado encontrado em allure-results"
-
       - name: Gerar relatório Allure
         if: always()
         run: |
