@@ -190,6 +190,7 @@ jobs:
           publish_branch: gh-pages
           publish_dir: allure-report
           commit_message: "Atualização do relatório Allure"
+          keep_files: false
 
       - name: Verificar link do relatório
         run: |
