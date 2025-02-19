@@ -116,10 +116,10 @@ jobs:
         with:
           gh_pages: gh-pages
           allure_history: allure-history
-          allure_results: ${GITHUB_WORKSPACE}/allure-results
+          allure_results: ${GITHUB_WORKSPACE}allure-results
 
       - name: Verificar conteúdo de allure-results
-        run: ls -R ${GITHUB_WORKSPACE}/allure-results
+        run: ls -R ${GITHUB_WORKSPACE}allure-results
 
       - name: Publicar relatório de testes
         uses: peaceiris/actions-gh-pages@v3
