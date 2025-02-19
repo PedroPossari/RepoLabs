@@ -174,19 +174,18 @@ jobs:
           sudo ln -s /opt/allure-2.24.0/bin/allure /usr/bin/allure
           allure --version
 
-      - name: Generate Allure Report
-        run: mvn allure:report
+      - name: Gerar relatório Allure
+        run: |
+          allure generate allure-results --clean -o allure-report
 
-      - name: Upload Allure Report as Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report
-          path: target/site/allure-maven/
+      - name: Verificar conteúdo de allure-report
+        run: |
+          ls -R allure-report || echo "Nenhum relatório encontrado em allure-report"
 
-      - name: Deploy Allure Report to gh-pages
+      - name: Publicar relatório de testes no GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
+        if: always()
         with:
-          github_token: ${{ secrets.PAT_TOKEN }}
+          personal_token: ${{ secrets.PAT_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./target/site/allure-maven
-          keep_files: true
+          publish_dir: allure-report
