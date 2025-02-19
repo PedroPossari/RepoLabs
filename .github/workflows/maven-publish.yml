@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0
       - uses: actions/cache@v1
         with:
           path: |
@@ -27,11 +27,11 @@ jobs:
           java-version: 17
 
       - name: Install dependencies
-        run: mvn  -f projetoResAula03/pom.xml dependency:go-offline compile compiler:testCompile
+        run: mvn -f projetoResAula03/pom.xml  dependency:go-offline compile compiler:testCompile
 
       - name: Run Test
         if: always()
-        run: mvn package
+        run: mvn -f projetoResAula03/pom.xml package
         continue-on-error: true
 
       - name: Cache SonarCloud packages
@@ -51,12 +51,11 @@ jobs:
       - name: Build and analyze
         if: always()
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -Psonarqube -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -f projetoResAula03/pom.xml
         continue-on-error: true
 
-      #Allure
       - name: Get Allure history
         uses: actions/checkout@v2
         if: always()
@@ -81,4 +80,5 @@ jobs:
         env:
           PERSONAL_TOKEN: ${{ secrets.PAT_TOKEN }}
           PUBLISH_BRANCH: gh-pages
+
           PUBLISH_DIR: allure-history
