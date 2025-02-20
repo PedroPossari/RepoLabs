@@ -13,6 +13,9 @@ target/
 *.iws
 *.iml
 *.ipr
+allure-results
+.idea
+
 
 ### Eclipse ###
 .apt_generated

@@ -3,6 +3,7 @@ package com.vemser.rest.test.usuarios;
 import com.vemser.rest.client.UsuarioClient;
 import com.vemser.rest.data.factory.UsuarioDataFactory;
 import com.vemser.rest.model.Usuario;
+import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +16,7 @@ public class UsuariosPostTest {
     private UsuarioClient usuarioClient = new UsuarioClient();
 
     @Test
+    @Feature("funcional")
     public void testCadastrarUsuarioComSucesso()
     {
         Usuario usuario = UsuarioDataFactory.usuarioValido();
@@ -32,6 +34,7 @@ public class UsuariosPostTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testCadastrarUsuarioComSucessoSchemas()
     {
 
@@ -47,6 +50,7 @@ public class UsuariosPostTest {
 
 
     @Test
+    @Feature("funcional")
     public void testCadastrarUsuarioSemPreencherOCampoNome()
     {
 
@@ -61,6 +65,7 @@ public class UsuariosPostTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testCadastrarUsuarioSemSenha()
     {
 

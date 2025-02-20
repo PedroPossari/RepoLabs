@@ -4,11 +4,16 @@ package com.vemser.rest.test.login;
 import com.vemser.rest.client.LoginClient;
 import com.vemser.rest.data.factory.LoginDataFactory;
 import com.vemser.rest.model.Login;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,6 +22,7 @@ public class LoginTest {
     private LoginClient loginClient = new LoginClient();
 
         @Test
+        @Feature("funcional")
         public void testLogarComSucesso()
         {
 
@@ -34,6 +40,9 @@ public class LoginTest {
         }
 
     @Test
+    @Tag("contrato")
+    @Feature("Autenticação")
+    @Severity(SeverityLevel.CRITICAL)
     public void testLogarComSucessoSchemas()
     {
         Login login = LoginDataFactory.loginValido();
@@ -47,6 +56,7 @@ public class LoginTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testLogarSenhaEmBranco()
     {
         Login login = LoginDataFactory.loginSemSenha();
@@ -61,6 +71,7 @@ public class LoginTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testLogarComEmailEmBranco()
     {
 

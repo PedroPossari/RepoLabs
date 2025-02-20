@@ -45,5 +45,4 @@ public class LoginClient extends BaseClient {
                         .post(LOGIN);
 
     }
-
 }

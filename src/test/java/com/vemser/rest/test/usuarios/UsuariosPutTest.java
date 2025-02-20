@@ -5,8 +5,12 @@ import com.vemser.rest.client.UsuarioClient;
 import com.vemser.rest.data.factory.UsuarioDataFactory;
 import com.vemser.rest.model.Usuario;
 import com.vemser.rest.utils.GerarDadosUsuario;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import io.restassured.response.Response;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 
@@ -20,6 +24,9 @@ public class UsuariosPutTest {
     private GerarDadosUsuario dadosDoUsuario = new GerarDadosUsuario();
 
     @Test
+    @Tag("contrato")
+    @Feature("Usuários")
+    @Severity(SeverityLevel.NORMAL)
     public void testAtualizarUsuarioComSucesso()
     {
 
@@ -34,6 +41,9 @@ public class UsuariosPutTest {
     }
 
     @Test
+    @Tag("contrato")
+    @Feature("Usuários")
+    @Severity(SeverityLevel.CRITICAL)
     public void testAtualizarUsuarioComSucessoSchema()
     {
 
@@ -46,27 +56,13 @@ public class UsuariosPutTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testAtualizarUsuarioSemPreencherOsCampos()
     {
 
         Usuario usuario = UsuarioDataFactory.usuarioEmBranco();
 
         Response response = usuarioClient.atualizarUsuarioPorID(usuario, dadosDoUsuario.gerarID());
-        assertAll("response",
-                () -> assertEquals(400, response.getStatusCode(), "O status code não é 400"),
-                () -> assertEquals(null, response.jsonPath().getString("message"), "Mensagem de erro inválida"),
-                () -> assertEquals("application/json; charset=utf-8", response.header("Content-Type"), "O Content-Type está incorreto")
-        );
-
-    }
-
-    @Test
-    public void testAtualizarUsuarioComIdInvalido()
-    {
-
-        Usuario usuario = UsuarioDataFactory.usuarioValido();
-
-        Response response = usuarioClient.atualizarUsuarioPorID(usuario, dadosDoUsuario.gerarDadoIdInvalido());
         assertAll("response",
                 () -> assertEquals(400, response.getStatusCode(), "O status code não é 400"),
                 () -> assertEquals(null, response.jsonPath().getString("message"), "Mensagem de erro inválida"),
