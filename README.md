@@ -1,36 +1,36 @@
-## Integrantes do Grupo :sunglasses:
+## Integrantes do Grupo 😎
 
 - **[José Alves](https://github.com/IBORD)**
 - **[Pedro Possari](https://github.com/PedroPossari)**
 
 ## 🔧 Arquitetura da Pipeline
 
-- Temos primeiro o **Build** para formar a base do actions, onde instalamos o java e buildamos as dependencias do maven.
+- Temos primeiro o **Build** para formar a base do actions, onde instalamos o java e buildamos as dependências do maven.
 - Agora vamos executar os testes de **HealthCheck** que só rodam se a build for executada com sucesso `needs: Build`. Adicionamos uma tag aos testes de health check para ele executar todos com essa tag `-Phealth`.
-- Adicionamos a propridade para  `-Dallure.results.directory=allure-results/health` os resultados estão sendo armazenados na pasta do allure-results
-- Adicionamos um `-DtestFailureIgnore=false` para ignorar os testes que falharem e isso se repete para os outros teste de **Contrato** e **Funcional**
-- Após isso verificamos se o conteudo foi adicionado ao allure-results com o comando `ls -R allure-results/funcional || echo "Nenhum resultado encontrado em allure-results/funcional"`.
-- E finalizando a parte dos teste fazemos um upload dos resultados para guardar.
+- Adicionamos a propriedade `-Dallure.results.directory=allure-results/health` para os resultados serem armazenados na pasta do allure-results
+- Adicionamos um `-DtestFailureIgnore=false` para ignorar os testes que falharem e isso se repete para os outros testes de **Contrato** e **Funcional**
+- Após isso verificamos se o conteúdo foi adicionado ao allure-results com o comando `ls -R allure-results/funcional || echo "Nenhum resultado encontrado em allure-results/funcional"`.
+- E finalizando a parte dos teste fazemos um upload dos resultados para guarda-los.
 - Na parte do **Reports** temos um needs `[ Build, HealthCheck, Contrato, Funcional ]` para ele esperar todos os passos anteriores. E em cada step temos um `if: always()` para executar mesmo se os trabalhos anteriores falharem.
-- Na parte de Carregar historico  `ref: gh-pages` clonamos o reposistorio do GitHub Pages e `path: gh-pages` Define o diretório onde o conteúdo da branch gh-pages será clonado.
+- Na parte de Carregar histórico  `ref: gh-pages` clonamos o repositório do GitHub Pages e `path: gh-pages` Define o diretório onde o conteúdo da branch gh-pages será clonado.
 - Baixamos todos os uploads feito anteriormente `- name: Baixar resultados dos testes funcionais
         uses: actions/download-artifact@v4
         with:
           name: functional-results-funcional
           path: allure-results/funcional` referenciando o local onde foi feito o upload.
-- Após isso fazemos o merge com o conteudo `- name: Merge test results
+- Após isso fazemos o merge com o contéudo `- name: Merge test results
         run: |
           mkdir -p allure-results
           cp -r allure-results/health/* allure-results/ || true
           cp -r allure-results/contrato/* allure-results/ || true
           cp -r allure-results/funcional/* allure-results/ || true`
 - Instalamos o allure via CLI
-- Geramos os relatorios `allure generate allure-results --clean -o allure-report`
-- Agora publicamos os relatorios no GitHub Pages passando o token de segurança, a branch, o diretorio e a mensagem de commit `personal_token: ${{ secrets.PAT_TOKEN }}
+- Geramos os relatórios `allure generate allure-results --clean -o allure-report`
+- Agora publicamos os relatórios no GitHub Pages passando o token de segurança, a branch, o diretório e a mensagem de commit `personal_token: ${{ secrets.PAT_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-report
           commit_message: "Publish Allure report"`
-- E por fim geramos um link para visualizar a pagina do allure com os resultados `echo "Acesse o relatório em https://pedropossari.com.br/RepoLabs/"`
+- E por fim geramos um link para visualizar a página do allure com os resultados `echo "Acesse o relatório em https://pedropossari.com.br/RepoLabs/"`
 
 ```yml
 name: pipeline
@@ -233,5 +233,12 @@ jobs:
 3. **Funcional**:
 - Para realizar esse teste pegamos todos os testes realizados na api da aplicação, com isso garantido o report das funcionalidades
 
+## 📢 Allure Report
+
+![allure01.png](allure01.png)
+![img_1.png](img_1.png)
 
 
+## ✅ Discord
+
+![img.png](img.png)
