@@ -225,15 +225,13 @@ jobs:
 
 
 1. **Health Check**:
-
-```bash
-mvn allure:report
-```
+- Para realizar esse teste pegamos o end-point de listar todos os usuarios com sucesso e verificamos o retorno esperado (200)
 
 2. **Contrato**:
-
-```bash
-mvn allure:serve
-```
+- Para realizar esse teste pegamos todos os testes de Schemas feitos na api para verificar a veracidade do body dos end-points
 
 3. **Funcional**:
+- Para realizar esse teste pegamos todos os testes realizados na api da aplicação, com isso garantido o report das funcionalidades
+
+
+
