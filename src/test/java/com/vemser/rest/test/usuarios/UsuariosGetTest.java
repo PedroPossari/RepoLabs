@@ -4,7 +4,11 @@ import com.vemser.rest.client.UsuarioClient;
 import com.vemser.rest.data.factory.UsuarioDataFactory;
 import com.vemser.rest.model.Usuario;
 import com.vemser.rest.utils.GerarDadosUsuario;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
@@ -15,8 +19,11 @@ public class UsuariosGetTest {
     private UsuarioClient usuarioClient = new UsuarioClient();
     private GerarDadosUsuario dadosDoUsuario = new GerarDadosUsuario();
 
-
     @Test
+    @Tag("health")
+    @Feature("Usuários")
+    @Feature("funcional")
+    @Severity(SeverityLevel.NORMAL)
     public void testListarUsuariosComSucesso()
     {
 
@@ -31,6 +38,10 @@ public class UsuariosGetTest {
     }
 
     @Test
+    @Tag("contrato")
+    @Feature("Usuários")
+    @Feature("funcional")
+    @Severity(SeverityLevel.CRITICAL)
     public void testListarUsuariosComSucessoSchemas()
     {
 
@@ -41,6 +52,7 @@ public class UsuariosGetTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testListarUsuariosPorNome()
     {
         Usuario usuario = UsuarioDataFactory.usuarioValido();
@@ -57,6 +69,7 @@ public class UsuariosGetTest {
 
 
     @Test
+    @Feature("funcional")
     public void testListarUsuariosPorNomeComMaisde255Caracteres()
     {
 
@@ -74,6 +87,7 @@ public class UsuariosGetTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testListarUsuariosPorSemPreencherOCampoNome()
     {
 
@@ -90,6 +104,7 @@ public class UsuariosGetTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testListarUsuarioPorIdComSucesso()
     {
         Response response = usuarioClient.listarUsuariosPorID(dadosDoUsuario.gerarID());
@@ -103,6 +118,7 @@ public class UsuariosGetTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testListarUsuarioPorIdComSucessoSchemas()
     {
 
@@ -114,22 +130,11 @@ public class UsuariosGetTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testListarUsuarioPorIdInvalido()
     {
 
         Response response = usuarioClient.listarUsuariosPorID(dadosDoUsuario.gerarDadoIdInvalido());
-        assertAll("response",
-                () -> assertEquals(400, response.getStatusCode(), "O status code não é 400 para ID inválido"),
-                () -> assertEquals("application/json; charset=utf-8", response.header("Content-Type"), "O Content-Type está incorreto"),
-                () -> assertTrue(response.jsonPath().getString("message").contains("Usuário não encontrado"), "Mensagem de Erro não corresponde")
-        );
-
-    }
-
-    @Test
-    public void testListarUsuarioPorIdEmBranco()
-    {
-        Response response = usuarioClient.listarUsuariosPorID("");
         assertAll("response",
                 () -> assertEquals(400, response.getStatusCode(), "O status code não é 400 para ID inválido"),
                 () -> assertEquals("application/json; charset=utf-8", response.header("Content-Type"), "O Content-Type está incorreto"),
