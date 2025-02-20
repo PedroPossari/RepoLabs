@@ -1,13 +1,11 @@
-name: teste ze
+name: pipeline
 run-name: ${{ github.actor }} is testing allure 🚀
 
 on: [push]
 
 jobs:
-  Setup:
+  Build:
     runs-on: ubuntu-latest
-    outputs:
-      java_version: '17'
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
@@ -20,14 +18,8 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
-  Build:
-    runs-on: ubuntu-latest
-    needs: Setup
-    steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - name: Build com Maven
+        run: mvn -B package -f pom.xml
 
       - name: Maven Verify
         run: mvn clean compile -f pom.xml
@@ -44,9 +36,6 @@ jobs:
         with:
           distribution: 'oracle'
           java-version: 17
-
-      - name: Build com Maven
-        run: mvn -B package -f pom.xml
 
       - name: Executar teste de Health check
         run: mvn test -Phealth -Dallure.results.directory=allure-results/health -DtestFailureIgnore=false
