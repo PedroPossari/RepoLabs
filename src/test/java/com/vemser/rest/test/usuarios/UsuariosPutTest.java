@@ -5,6 +5,9 @@ import com.vemser.rest.client.UsuarioClient;
 import com.vemser.rest.data.factory.UsuarioDataFactory;
 import com.vemser.rest.model.Usuario;
 import com.vemser.rest.utils.GerarDadosUsuario;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import io.restassured.response.Response;
 
 import org.junit.jupiter.api.Tag;
@@ -22,6 +25,8 @@ public class UsuariosPutTest {
 
     @Test
     @Tag("health")
+    @Feature("Usuários")
+    @Severity(SeverityLevel.NORMAL)
     public void testAtualizarUsuarioComSucesso()
     {
 
@@ -37,6 +42,8 @@ public class UsuariosPutTest {
 
     @Test
     @Tag("contrato")
+    @Feature("Usuários")
+    @Severity(SeverityLevel.CRITICAL)
     public void testAtualizarUsuarioComSucessoSchema()
     {
 
