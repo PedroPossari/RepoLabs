@@ -56,6 +56,7 @@ public class UsuariosPutTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testAtualizarUsuarioSemPreencherOsCampos()
     {
 

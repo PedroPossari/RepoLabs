@@ -22,6 +22,7 @@ public class LoginTest {
     private LoginClient loginClient = new LoginClient();
 
         @Test
+        @Feature("funcional")
         public void testLogarComSucesso()
         {
 
@@ -55,6 +56,7 @@ public class LoginTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testLogarSenhaEmBranco()
     {
         Login login = LoginDataFactory.loginSemSenha();
@@ -69,6 +71,7 @@ public class LoginTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testLogarComEmailEmBranco()
     {
 

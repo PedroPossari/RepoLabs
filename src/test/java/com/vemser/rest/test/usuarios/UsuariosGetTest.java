@@ -22,6 +22,7 @@ public class UsuariosGetTest {
     @Test
     @Tag("health")
     @Feature("Usuários")
+    @Feature("funcional")
     @Severity(SeverityLevel.NORMAL)
     public void testListarUsuariosComSucesso()
     {
@@ -39,6 +40,7 @@ public class UsuariosGetTest {
     @Test
     @Tag("contrato")
     @Feature("Usuários")
+    @Feature("funcional")
     @Severity(SeverityLevel.CRITICAL)
     public void testListarUsuariosComSucessoSchemas()
     {
@@ -50,6 +52,7 @@ public class UsuariosGetTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testListarUsuariosPorNome()
     {
         Usuario usuario = UsuarioDataFactory.usuarioValido();
@@ -66,6 +69,7 @@ public class UsuariosGetTest {
 
 
     @Test
+    @Feature("funcional")
     public void testListarUsuariosPorNomeComMaisde255Caracteres()
     {
 
@@ -83,6 +87,7 @@ public class UsuariosGetTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testListarUsuariosPorSemPreencherOCampoNome()
     {
 
@@ -99,6 +104,7 @@ public class UsuariosGetTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testListarUsuarioPorIdComSucesso()
     {
         Response response = usuarioClient.listarUsuariosPorID(dadosDoUsuario.gerarID());
@@ -112,6 +118,7 @@ public class UsuariosGetTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testListarUsuarioPorIdComSucessoSchemas()
     {
 
@@ -123,6 +130,7 @@ public class UsuariosGetTest {
     }
 
     @Test
+    @Feature("funcional")
     public void testListarUsuarioPorIdInvalido()
     {
 
