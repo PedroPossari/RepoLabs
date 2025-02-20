@@ -193,4 +193,4 @@ jobs:
 
       - name: Verificar link do relatório
         run: |
-          echo "Acesse o relatório em https://<seu-usuario>.github.io/<seu-repositorio>/allure-report/index.html"
+          echo "Acesse o relatório em https://pedropossari.com.br/RepoLabs/"
