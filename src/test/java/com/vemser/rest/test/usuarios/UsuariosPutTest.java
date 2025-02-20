@@ -24,7 +24,7 @@ public class UsuariosPutTest {
     private GerarDadosUsuario dadosDoUsuario = new GerarDadosUsuario();
 
     @Test
-    @Tag("health")
+    @Tag("contrato")
     @Feature("Usuários")
     @Severity(SeverityLevel.NORMAL)
     public void testAtualizarUsuarioComSucesso()

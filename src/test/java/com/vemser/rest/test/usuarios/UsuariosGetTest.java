@@ -19,8 +19,10 @@ public class UsuariosGetTest {
     private UsuarioClient usuarioClient = new UsuarioClient();
     private GerarDadosUsuario dadosDoUsuario = new GerarDadosUsuario();
 
-
     @Test
+    @Tag("health")
+    @Feature("Usuários")
+    @Severity(SeverityLevel.NORMAL)
     public void testListarUsuariosComSucesso()
     {
 
